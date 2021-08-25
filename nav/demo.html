@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <style>
+
+		/* Dropdowns */
+		.navbar-nav ul {
+			background: #333;
+      padding: 0;
+      margin: 0;
+		}
+
+		.navbar-nav li {
+			float: left;
+			position: relative;
+		}
+
+		/* Top level nav items */
+		.navbar-nav li > a {
+			color: #333;
+			text-decoration: none;
+		}
+
+    .navbar-light .navbar-nav .nav-link{
+      color: #333;
+      padding-right: 1rem;
+      padding-left: 1rem;
+    }
+
+    .navbar-nav li li > a {
+      padding: 10px 15px;
+      border: 1px solid #222;
+      border-width: 0 0 1px;
+    }
+
+		/* Top level hover state, preserve hover state when hovering dropdown  */
+		.navbar-nav li > a:hover,
+		.navbar-nav li > a:focus,
+		.navbar-nav li:focus > a,
+		.navbar-nav li:hover > a {
+			background: rgb(231, 229, 229);
+			outline: 0;
+		}
+
+		.navbar-nav ul li {
+			float: none;
+			position: static;
+		}
+
+		.navbar-nav ul a {
+			color: #FFF;
+		}
+
+		.navbar-nav ul a:hover,
+		.navbar-nav ul a:focus {
+			background: #EEE;
+			color: #333;
+
+		}
+
+		.navbar-nav ul a:focus, .navbar-nav .nav-link:focus {
+      text-decoration: underline;
+		}
+
+    </style>
+
+    <title>Hello, world!</title>
+  </head>
+  <body>
+    <header>
+        
+    </header>
+    <main role="main">
+        <section class="jumbotron">
+            <div class="container">
+                <h1 class="jumbotron-heading">Nav example</h1>
+            </div>
+        </section>
+        <div class="album py-5 bg-light">
+            <div class="container">
+                <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                      <span class="navbar-toggler-icon"></span>
+                    </button>
+                  
+                    <div role="navigation" aria-label="Main menu" class="collapse navbar-collapse" id="navbarSupportedContent">
+                      <ul class="navbar-nav mr-auto">
+                        <li class="nav-item active">
+                          <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" href="#">Link</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Dropdown
+                          </a>
+                          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                              <li class="nav-item"><a class="dropdown-item" href="#">Action</a></li>
+                              <li class="nav-item"><a class="dropdown-item" href="#">First action</a></li>
+                              <li class="nav-item"><a class="dropdown-item" href="#">Second action</a></li>
+                              <li class="nav-item"><a class="dropdown-item" href="#">Third action</a></li>
+                          </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Dropdown 2
+                          </a>
+                          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                              <li class="nav-item"><a class="dropdown-item" href="#">Action 2</a></li>
+                              <li class="nav-item"><a class="dropdown-item" href="#">First action</a></li>
+                              <li class="nav-item"><a class="dropdown-item" href="#">Second action</a></li>
+                              <li class="nav-item"><a class="dropdown-item" href="#">Third action</a></li>
+                          </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Link 2</a>
+                        </li>
+                      </ul>
+                    </div>
+                  </nav>
+            </div>
+        </div>
+    </main>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script>
+    $(document).ready(function() {
+      $('.navbar-nav').setup_navigation();
+    }); 
+
+    $.fn.setup_navigation = function(settings) {
+
+      settings = jQuery.extend({
+        menuHoverClass: 'show',
+      }, settings);
+      
+      // Add ARIA role to menubar and menu items
+      $(this).attr('role', 'menubar').find('li').attr('role', 'menuitem');
+      
+      var top_level_links = $(this).find('> li > a');
+      
+      // Set tabIndex to -1 so that top_level_links can't receive focus until menu is open
+      $(top_level_links).next('ul')
+        .attr({ 'aria-hidden': 'true', 'role': 'menu' })
+        .find('a')
+          .attr('tabIndex',-1);
+      
+      // Adding aria-haspopup for appropriate items
+      $(top_level_links).each(function(){
+        if($(this).next('ul').length > 0)
+          $(this).parent('li').attr('aria-haspopup', 'true');
+      });
+      
+      $(top_level_links).hover(function(){
+        $(this).closest('ul') 
+          .attr('aria-hidden', 'false')
+          .find('.'+settings.menuHoverClass)
+            .attr('aria-hidden', 'true')
+            .removeClass(settings.menuHoverClass)
+            .find('a')
+              .attr('tabIndex',-1);
+        $(this).next('ul')
+          .attr('aria-hidden', 'false')
+          .addClass(settings.menuHoverClass)
+          .find('a').attr('tabIndex',0);
+      });
+      $(top_level_links).focus(function(){
+        $(this).closest('ul')
+          .find('.'+settings.menuHoverClass)
+            .attr('aria-hidden', 'true')
+            .removeClass(settings.menuHoverClass)
+            .find('a')
+              .attr('tabIndex',-1);
+        $(this).next('ul')
+          .attr('aria-hidden', 'false')
+          .addClass(settings.menuHoverClass)
+          .find('a').attr('tabIndex',0);
+      });
+    }
+    </script>
+  </body>
+</html>

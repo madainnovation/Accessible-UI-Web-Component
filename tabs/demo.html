@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <style>
+
+      .nav > li > a {
+          position: relative;
+          display: block;
+          padding: .75rem 1.25rem;
+      }
+
+      .nav > li > a:focus, .nav > li > a:hover{
+          text-decoration: underline;
+      }
+
+    </style>
+
+    <title>Accessible Tabs example</title>
+  </head>
+  <body>
+    <header>
+        
+    </header>
+    <main role="main">
+        <section class="jumbotron">
+            <div class="container">
+                <h1 class="jumbotron-heading">Accessible Tabs example</h1>
+            </div>
+        </section>
+        <div class="album py-5 bg-light">
+            <div class="container">
+                <!-- Nav tabs -->
+                <div id="tabs" class="panel-body">
+                    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                        <li class="nav-item" role="presentation"><a class="nav-link active" href="#home" aria-controls="home" role="tab" aria-selected="true" tabindex="0">Home</a></li>
+                        <li class="nav-item" role="presentation"><a class="nav-link" href="#profile" aria-controls="profile" role="tab" aria-selected="false" tabindex="0">Profile</a></li>
+                        <li class="nav-item" role="presentation"><a class="nav-link" href="#messages" aria-controls="messages" role="tab" aria-selected="false" tabindex="0">Messages</a></li>
+                        <li class="nav-item" role="presentation"><a class="nav-link" href="#settings" aria-controls="settings" role="tab" aria-selected="false" tabindex="0">Settings</a></li>
+                    </ul>
+        
+                    <!-- Tab panes -->
+                    <div class="tab-content" id="nav-tabContent">
+                        <div role="tabpanel" class="tab-pane panel-body active" id="home" aria-labelledby="tab1" aria-hidden="false">
+                        <h4>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</h4>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut iaculis aliquam turpis, a pretium velit tincidunt id. Vivamus venenatis maximus sapien, nec porttitor diam accumsan eget. Proin nec sem nulla. Pellentesque molestie nibh sit amet efficitur pellentesque. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Duis ultrices finibus est, et suscipit turpis fringilla vitae. In vel interdum ligula. Aliquam erat volutpat. Nam varius nulla risus, id dictum tortor fringilla vel. Praesent tristique, odio ut blandit mattis, nibh nulla interdum augue, vel laoreet ex nibh efficitur purus. Pellentesque rhoncus volutpat ligula eu ultricies. </div>
+                        <div role="tabpanel" class="tab-pane panel-body" id="profile" aria-labelledby="tab2" aria-hidden="true">
+                        <h4>Nunc commodo nibh ut velit tristique dapibus.</h4>
+                        Nam magna felis, condimentum a tempor et, maximus ut augue. Aliquam in viverra urna. Fusce congue tempus tempor. Cras pretium sem vel libero pellentesque volutpat. Interdum et malesuada fames ac ante ipsum primis in faucibus. Cras iaculis imperdiet turpis et venenatis. Donec ac dapibus mauris, id imperdiet nisi. Donec mollis mauris at libero accumsan mollis. Nulla a aliquam est, et commodo tortor. </div>
+                        <div role="tabpanel" class="tab-pane panel-body" id="messages" aria-labelledby="tab3" aria-hidden="true">
+                        <h4>In maximus justo ac turpis ultrices, tincidunt eleifend purus ultricies.</h4>
+                        Morbi at tristique metus. Proin at purus sed justo fringilla accumsan. Aliquam id diam blandit metus tempus blandit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur fermentum rutrum sapien, eu fringilla erat tristique non. Fusce tempor, nisl sit amet dictum bibendum, nibh eros euismod nulla, non viverra dui dui sed magna. Etiam maximus sodales metus at egestas. Vivamus tincidunt laoreet eros nec dictum. </div>
+                        <div role="tabpanel" class="tab-pane panel-body" id="settings" aria-labelledby="tab4" aria-hidden="true">
+                        <h4>Integer quis diam maximus, mattis nibh at, sollicitudin dui.</h4>
+                        Integer mattis velit pharetra viverra pulvinar. Nam finibus est sit amet purus convallis blandit. Curabitur pharetra egestas augue vel aliquam. Cras eleifend ex at gravida semper. Donec neque erat, dignissim vitae eleifend nec, eleifend vitae velit. Vivamus quis porttitor dui. Curabitur id tincidunt mi, nec ullamcorper ante. Ut sollicitudin risus at tortor luctus, ut accumsan ipsum ullamcorper. Praesent nec dui a nisl suscipit fringilla at eu augue. </div>
+                    </div>
+                </div>
+            </div>
+              
+        </div>
+    </main>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+
+    <script>
+    ( function( $ ) {
+
+        $("li[role='presentation'] a").click(function(e){
+
+            e.preventDefault();
+
+            // enable bootstrap tab
+            $(this).tab('show')
+
+            //deselect all the tabs 
+            $("li[role='presentation'] a").attr("aria-selected","false");
+
+            // select this tab
+            $(this).attr("aria-selected","true");
+
+            //find out what tab panel this tab controls
+            var tabpanid= $(this).attr("aria-controls");  
+            
+            var tabpan = $("#"+tabpanid);
+
+            //hide all the panels 
+            $("div[role='tabpanel']").attr("aria-hidden","true");
+
+            // show our panel
+            tabpan.attr("aria-hidden","false");
+
+            // Set focus to the first heading in the newly revealed tab content
+            tabpan.children("h4").attr("tabindex", -1).focus();
+        });
+    } )( jQuery );
+    </script>
+  </body>
+</html>

@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <style>
+      .error{
+          color: #a94442;
+      }
+      .radio.radio-inline{
+          margin-top: 0;
+          margin-left: 30px;
+      }
+      .has-error .form-control {
+          border-color: #a94442;
+          -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+          box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+      }
+    </style>
+    <title>Accessible Form with error validation example</title>
+  </head>
+  <body>
+    <header>
+        
+    </header>
+    <main role="main">
+      <section class="jumbotron">
+        <div class="container">
+          <h1 class="jumbotron-heading">Accessible Form with error validation example</h1>
+        </div>
+      </section>
+      <div class="container">
+        <form name="contact" id="contact" class="contact-form" role="form" method="post" action="">
+          <fieldset class="layout">
+            <legend><h3>Contact Us - Demo 2</h3></legend>
+              <p class="notice">Required fields are followed by <abbr class="text-danger" title="required">*</abbr></p>
+                <div class="wrapped">
+                  <div class="form-group">
+                      <label class="control-label" for="subject">Subject</label>
+                      <div class="field-control">
+                        <input type="text" class="form-control" id="subject" name="subject" placeholder="Subject">
+                      </div>
+                  </div>
+                  <div class="form-group">
+                      <label class="control-label" for="yourname">Your Name <abbr title="required">*</abbr></label>
+                      <div class="field-control">
+                        <input type="text" class="form-control required" id="yourname" name="yourname" placeholder="Your Name" aria-required="true">
+                      </div>
+                  </div>
+                  <div class="form-group">
+                      <label class="control-label" for="email1">Email address <abbr title="required">*</abbr></label>
+                      <div class="field-control">
+                        <input type="email" class="form-control required" id="email1" name="email1" placeholder="Enter email" aria-required="true">
+                      </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="field-control" aria-required="true" aria-invalid="false">
+                        <div id="department">Which department you need to contact?</div>
+                        <div class="radio radio-inline">
+                          <input type="radio" id="sales" aria-labelledby="department _sales" class="form-check-input" name="dept">
+                          <label class="form-check-label" for="sales" id="_sales">Sales</label>
+                        </div>
+                        <div class="radio radio-inline">
+                          <input type="radio" id="it" aria-labelledby="department _it" class="form-check-input" name="dept">
+                          <label class="form-check-label" for="it" id="_it">IT</label>
+                        </div>
+                        <div class="radio radio-inline">
+                          <input type="radio" id="marketing" aria-labelledby="department _marketing" class="form-check-input" name="dept">
+                          <label class="form-check-label" for="marketing" id="_marketing">Marketing</label>
+                        </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                      <label class="control-label" for="message">Message <abbr title="required">*</abbr></label>
+                      <div class="field-control">
+                        <textarea class="form-control required" id="message" name="message" aria-required="true" rows="3"></textarea>
+                      </div>
+                  </div>
+                <div class="form-group">
+                  <button type="submit" class="btn btn-primary" name="send" value="Send">Send</button>
+                </div>
+              </div>
+          </fieldset>
+        </form>
+      </div>
+    </main>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
+
+    <script>
+
+
+      $(document).ready(function() {
+          $("form[name='contact']").form_validation();
+      });
+
+      jQuery.fn.form_validation = function(){
+
+        $(this).validate({
+          // Specify validation rules
+          rules: {
+            // The key name on the left side is the name attribute
+            // of an input field. Validation rules are defined
+            yourname: "required",
+            email1: {
+              required: true,
+              // Specify that email should be validated
+              // by the built-in "email" rule
+              email: true
+            },
+            dept: "required",
+            message: "required",
+          },
+          // Specify validation error messages
+          messages: {
+            yourname: "Please provide your name",
+            email1: "Please enter a valid email address",
+            dept: "Please select a department",
+            message: "Please select a message",
+          },
+          errorElement: "em",
+          errorPlacement: function ( error, element ) {
+            // Add the `help-block` class to the error element
+            error.addClass( "help-block" );
+
+            // make the error comes after the fieldset element
+            if ( element.is(":radio") || element.is(":checkbox") ){
+                error.appendTo( element.parents('.field-control') );
+            }else{
+              error.insertAfter( element );
+            }
+          },
+          highlight: function ( element, errorClass, validClass ) {
+            $( element ).parents( ".field-control" ).addClass( "has-error" );
+          },
+          unhighlight: function (element, errorClass, validClass) {
+            $( element ).parents( ".field-control" ).removeClass( "has-error" );
+          },
+          submitHandler: function () {
+            alert( "submitted!" );
+          }
+        });
+      }
+    </script>
+  </body>
+</html>

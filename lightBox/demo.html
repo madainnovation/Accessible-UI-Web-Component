@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <style>
+
+    </style>
+
+    <title>Accessible Light Box example</title>
+  </head>
+  <body>
+    <header>
+        
+    </header>
+    <main role="main">
+        <section class="jumbotron">
+            <div class="container">
+                <h1 class="jumbotron-heading">Accessible Light Box example</h1>
+            </div>
+        </section>
+        <div class="album py-5 bg-light">
+            <div class="container">
+                <h2 class="page-header">Image Gallery</h2>
+                <div class="row">
+                    <div class="col thumb">
+                        <a class="thumbnail" href="#" data-image-id="" data-toggle="modal" data-title="" data-caption="Some description about image 1" data-image="images/img1.jpg" data-target="#image-gallery">
+                            <img class="img-thumbnail" src="images/img1.jpg" alt="image 1">
+                        </a>
+                    </div>
+                    <div class="col thumb">
+                        <a class="thumbnail" href="#" data-image-id="" data-toggle="modal" data-title="" data-caption="Some description about image 2" data-image="images/img2.jpg" data-target="#image-gallery">
+                            <img class="img-thumbnail" src="images/img2.jpg" alt="image 2">
+                        </a>
+                    </div>
+                    <div class="col thumb">
+                        <a class="thumbnail" href="#" data-image-id="" data-toggle="modal" data-title="" data-caption="Some description about image 3" data-image="images/img3.jpg" data-target="#image-gallery">
+                            <img class="img-thumbnail" src="images/img3.jpg" alt="image 3">
+                        </a>
+                    </div>
+                </div>
+
+
+                <div class="modal fade" id="image-gallery" tabindex="-1" role="dialog" aria-describedby="image-gallery-caption" aria-hidden="true" aria-live="polite">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="">
+                                <button id="btnClose" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            </div>
+                            <div class="modal-body">
+                                <img id="image-gallery-image" class="img-fluid" src="">
+                            </div>
+                            <div class="modal-footer">
+
+                                <div class="col-sm-2">
+                                    <button type="button" class="btn btn-primary" id="show-previous-image">Previous</button>
+                                </div>
+
+                                <figcaption class="figure-caption col-sm-8" id="image-gallery-caption">
+                                    A caption for the above image
+                                </figcaption>
+
+                                <div class="col-sm-2">
+                                    <button type="button" id="show-next-image" class="btn btn-default">Next</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+
+    <script>
+    $(document).ready(function(){
+
+        loadTheGallery(true, 'a.thumbnail');
+
+        // disables buttons once reach to first or last
+        function disableButtons(counter_max, counter_current){
+            $('#show-previous-image, #show-next-image').show();
+            if(counter_max == counter_current){
+                $('#show-next-image').hide();
+                // move focus to previous button
+                $('#show-previous-image').focus();
+            } else if (counter_current == 1){
+                $('#show-previous-image').hide();
+                // move focus to next button
+                $('#show-next-image').focus();
+            }
+        }
+
+        // load the gallery and insert ARIA attributes
+        function loadTheGallery(setIDs, setClickAttr){
+            var current_image,
+                selector,
+                counter = 0;
+
+            $('#show-next-image, #show-previous-image').click(function(){
+                if($(this).attr('id') == 'show-previous-image'){
+                    current_image--;
+                } else {
+                    current_image++;
+                }
+
+                selector = $('[data-image-id="' + current_image + '"]');
+                updateGallery(selector);
+            });
+
+            function updateGallery(selector) {
+                var $sel = selector;
+                current_image = $sel.data('image-id');
+                //$("#image-gallery").attr("aria-hidden","false");
+                // remove tab order
+                //$("#image-gallery").attr("tabindex","-1");
+                $('#image-gallery-caption').text($sel.data('caption'));
+                $('#image-gallery-title').text($sel.data('title'));
+                $('#image-gallery-image').attr('src', $sel.data('image'));
+                disableButtons(counter, $sel.data('image-id'));
+
+            }
+
+            if(setIDs == true){
+                $('[data-image-id]').each(function(){
+                    counter++;
+                    $(this).attr('data-image-id',counter);
+                });
+            }
+            $(setClickAttr).on('click',function(){
+                updateGallery($(this));
+            });
+        }
+    });
+    </script>
+  </body>
+</html>

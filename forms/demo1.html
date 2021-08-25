@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <style>
+      #errors-contact, #errors-contact ul li, #errors-contact ul li a{
+        color: #000000;
+      }
+      #errors-contact ul li a:focus{
+        text-decoration: underline;
+      }
+      .radio.radio-inline {
+          margin-top: 0;
+          margin-left: 35px;
+          display: initial;
+      }
+    </style>
+    <title>Accessible Form with error validation example</title>
+  </head>
+  <body>
+    <header>
+        
+    </header>
+    <main role="main">
+      <section class="jumbotron">
+        <div class="container">
+          <h1 class="jumbotron-heading">Accessible Form with error validation example</h1>
+        </div>
+      </section>
+      <div class="container">
+        <form name="contact" id="contact" class="contact-form" role="form" method="post" action="">
+          <fieldset class="layout">
+            <legend><h3>Contact Us - Demo 1</h3></legend>
+              <p class="notice">Required fields are followed by <abbr class="text-danger" title="required">*</abbr></p>
+                <div class="wrapped">
+                  <div class="form-group">
+                      <label class="control-label" for="subject">Subject</label>
+                      <div class="field-control">
+                        <input type="text" class="form-control" id="subject" name="subject" placeholder="Subject">
+                      </div>
+                  </div>
+                  <div class="form-group">
+                      <label class="control-label" for="yourname">Your Name <abbr title="required">*</abbr></label>
+                      <div class="field-control">
+                        <input type="text" class="form-control required" id="yourname" name="yourname" placeholder="Your Name" aria-required="true">
+                      </div>
+                  </div>
+                  <div class="form-group">
+                      <label class="control-label" for="email1">Email address <abbr title="required">*</abbr></label>
+                      <div class="field-control">
+                        <input type="email" class="form-control required" id="email1" name="email1" placeholder="Enter email" aria-required="true">
+                      </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="field-control">
+                        <div id="department" aria-required="true">Which department you need to contact?</div>
+                        <div class="radio radio-inline">
+                          <input type="radio" id="sales" aria-labelledby="department _sales" class="form-check-input" name="dept">
+                          <label class="form-check-label" for="sales" id="_sales">Sales</label>
+                        </div>
+                        <div class="radio radio-inline">
+                          <input type="radio" id="it" aria-labelledby="department _it" class="form-check-input" name="dept">
+                          <label class="form-check-label" for="it" id="_it">IT</label>
+                        </div>
+                        <div class="radio radio-inline">
+                          <input type="radio" id="marketing" aria-labelledby="department _marketing" class="form-check-input" name="dept">
+                          <label class="form-check-label" for="marketing" id="_marketing">Marketing</label>
+                        </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                      <label class="control-label" for="message">Message <abbr title="required">*</abbr></label>
+                      <div class="field-control">
+                        <textarea class="form-control required" id="message" name="message" aria-required="true" rows="3"></textarea>
+                      </div>
+                  </div>
+                <div class="form-group">
+                  <button type="submit" class="btn btn-primary" name="send" value="Send">Send</button>
+                </div>
+              </div>
+          </fieldset>
+        </form>
+      </div>
+    </main>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
+
+    <script>
+
+
+      $(document).ready(function() {
+          $("form[name='contact']").form_validation();
+      });
+
+      jQuery.fn.form_validation = function(){
+
+        var form = this;
+
+        $(form).validate({
+          //Optional, but for demo purpose we only want to validate on submitting the form
+          onfocusout: false,
+          onkeyup: false,
+          onclick: false,
+
+          //We are going to focus on the first link in the error list so i have disabled
+          //the input error focus option in jQuery Validation
+          focusInvalid: false,
+          rules: {
+            dept: "required",
+          },
+          messages: {
+              yourname: "Please specify your name.",
+              email1: {
+                  required: "We need your email address to contact you.",
+                  email: "Your email address must be in the format of name@domain.com."
+              },
+              dept: "Please choose the department",
+              message: "Please enter your message"
+          },
+
+            //Location for the inline error messages
+            //In this case we will place them in the associated label element
+          errorPlacement: function(error, element) {
+            //error.appendTo($('label[for="' + $(element).attr('id') + '"]', form));
+          },
+          //Create our error summary that will appear before the form
+          showErrors: function(errorMap, errorList) {
+          if (submitted && errorList) {
+
+              var $errorFormId = 'errors-' + form.attr('id')
+
+              //Reset and remove error messages if the form
+              //has been validated once already
+              summary = "";
+              $('label .error', form).remove();
+
+              //Create our container if one doesnt already exits
+              //better than an empty div being in the HTML source
+              if($('#' + $errorFormId).length == 0) {
+                  $('<div class="alert alert-danger" role="alert" id="' + $errorFormId + '"/>').insertBefore('.wrapped');
+              }
+
+              //Generate our error summary list
+              for (error in errorList) {
+                //get associated label text to be used for the error summary
+                summary += '<li><a href="#' + errorList[error].element.id + '">' + errorList[error].message + '</a></li>';
+              }
+
+              //Output our error summary and place it in the error container
+              $('#' + $errorFormId).html('<p><em>Oops!</em> - There is a problem with the form, please check and correct the following:</p><ul>' + summary + '</ul>');
+
+              //Focus on first error link in the error container
+              //Alternatively, you might want to use the Validation default option (focusInvalid)
+              $('#' + $errorFormId + ' a:eq(0)').focus();
+
+              //Move the focus to the associated input when error message link is triggered
+              //a simple href anchor link doesnt seem to place focus inside the input
+              $('#' + $errorFormId + ' a').click(function() {
+                $($(this).attr('href')).focus();
+                return false;
+              });
+          }
+          this.defaultShowErrors();
+            submitted = false;
+          },
+          invalidHandler: function(form, validator){
+              submitted = true;
+          },
+          submitHandler: function () {
+            $('<div class="alert alert-success" role="alert" id="errors-contact"/>').insertBefore('.wrapped');
+				    $("#errors-contact").remove();
+				    $('#errors-contact').html('<p>Thank you, your request is submitted successfully.</p>');
+				  	$('#errors-contact p').focus();
+          }
+        });
+      }
+    </script>
+  </body>
+</html>

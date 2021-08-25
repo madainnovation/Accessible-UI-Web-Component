@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <style>
+
+      #multi-slide-carousel div.carousel-item div.row{
+        margin-right: 0;
+        margin-left: 0;
+      }
+      #multi-slide-carousel div.carousel-item div.row div.col a:focus{
+        border: 5px solid #000;
+        display: inherit;
+
+      }
+      .controls{
+        padding: 15px;
+      }
+
+    </style>
+
+    <title>Accessible Carousel example</title>
+  </head>
+  <body>
+    <header>
+        
+    </header>
+    <main role="main">
+        <section class="jumbotron">
+            <div class="container">
+                <h1 class="jumbotron-heading">Accessible Carousel example</h1>
+            </div>
+        </section>
+        <div class="py-5 bg-light">
+            <div class="container">
+                <div class="controls">
+                    <button type="button" class="btn btn-info begin">
+                          Start </button>
+                    <button type="button" class="btn btn-warning pause">
+                          Pause </button>
+                </div>
+              <div id="multi-slide-carousel" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner">
+                  <div class="carousel-item active">
+                    <div class="row">
+                        <div class="col"><a href="#"><img src="images/1.jpg" class="img-fluid" alt="slide 1"></a></div>
+                        <div class="col"><a href="#"><img src="images/2.jpg" class="img-fluid" alt="slide 2"></a></div>
+                        <div class="col"><a href="#"><img src="images/3.jpg" class="img-fluid" alt="slide 3"></a></div>
+                    </div>
+                  </div>
+                  <div class="carousel-item">
+                    <div class="row">
+                        <div class="col"><a href="#"><img src="images/4.jpg" class="img-fluid" alt="slide 4"></a></div>
+                        <div class="col"><a href="#"><img src="images/5.jpg" class="img-fluid" alt="slide 5"></a></div>
+                        <div class="col"><a href="#"><img src="images/6.jpg" class="img-fluid" alt="slide 6"></a></div>
+                    </div>
+                  </div>
+                  <div class="carousel-item">
+                    <div class="row">
+                        <div class="col"><a href="#"><img src="images/7.jpg" class="img-fluid" alt="slide 7"></a></div>
+                        <div class="col"><a href="#"><img src="images/8.jpg" class="img-fluid" alt="slide 8"></a></div>
+                        <div class="col"><a href="#"><img src="images/9.jpg" class="img-fluid" alt="slide 9"></a></div>
+                    </div>
+                  </div>
+                </div>
+                <a class="carousel-control-prev" href="#multi-slide-carousel" role="button" data-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#multi-slide-carousel" role="button" data-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="sr-only">Next</span>
+                </a>
+              </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script>
+    $( document ).ready(function() {
+      // Initiate
+      $(".begin").click(function(){
+        $("#multi-slide-carousel").carousel('cycle');
+      });
+      // pause
+      $(".pause").click(function(){
+        $("#multi-slide-carousel").carousel('pause');
+      });
+      $('#multi-slide-carousel div.carousel-item div.row div.col').keydown(function(e) {
+        if(e.shiftKey && e.which === 9){
+          if(e.delegateTarget.previousSibling.previousSibling == null){
+              $('#multi-slide-carousel').carousel('prev');
+            }
+        } else if (e.which === 9){
+            if(e.delegateTarget.nextSibling.nextSibling == null){
+              $('#multi-slide-carousel').carousel('next');
+            }
+        }
+      });
+    });
+    </script>
+  </body>
+</html>
